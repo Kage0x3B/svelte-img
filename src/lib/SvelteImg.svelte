@@ -66,7 +66,7 @@ High-performance responsive/progressive images for SvelteKit.
 
 @example
 <script>
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
   import src from '$lib/assets/cat.jpg?as=run'
 </script>
 

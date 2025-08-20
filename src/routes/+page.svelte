@@ -43,12 +43,12 @@
 		multiple widths and next-gen formats.
 	</blockquote>
 	<h2>Install</h2>
-	<pre><code>{esc(`$ npm i -D @zerodevx/svelte-img`)}</code></pre>
+	<pre><code>{esc(`$ npm i -D @kage0x3b/svelte-img`)}</code></pre>
 	<p>Add <code>imagetools</code> plugin into your <code>vite.config.js</code>:</p>
 	<pre><code
 			>{esc(`import { defineConfig } from 'vite'
 import { sveltekit } from '@sveltejs/kit/vite'
-import { imagetools } from '@zerodevx/svelte-img/vite'
+import { imagetools } from '@kage0x3b/svelte-img/vite'
 
 export default defineConfig({
   plugins: [sveltekit(), imagetools()]
@@ -59,7 +59,7 @@ export default defineConfig({
 	<pre><code
 			>{esc(`<script>
   import cat from '$lib/assets/cat.jpg?as=run'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 <\/script>
 
 <Img class="cool kitty" src={cat} alt="Very meow" />`)}</code

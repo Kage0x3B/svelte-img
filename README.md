@@ -10,14 +10,14 @@ Includes special effects:
 - [x] Fade-in on image reveal
 - [x] Parallax vertical scroll effect
 
-Hope you like cats. Demo: https://zerodevx.github.io/svelte-img/
+Hope you like cats. Demo: https://svelte-img.moritz.website
 
 ## Install
 
 Install the package:
 
 ```
-$ npm i -D @zerodevx/svelte-img
+$ npm i -D @kage0x3b/svelte-img
 ```
 
 Add `imagetools` plugin into your `vite.config.js`:
@@ -25,7 +25,7 @@ Add `imagetools` plugin into your `vite.config.js`:
 ```js
 import { defineConfig } from 'vite'
 import { sveltekit } from '@sveltejs/kit/vite'
-import { imagetools } from '@zerodevx/svelte-img/vite'
+import { imagetools } from '@kage0x3b/svelte-img/vite'
 
 export default defineConfig({
   plugins: [sveltekit(), imagetools()]
@@ -66,7 +66,7 @@ Use anywhere in your Svelte app:
 <script>
   // Import original full-sized image with `?as=run` query param
   import cat from '$lib/assets/cat.jpg?as=run'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 </script>
 
 <Img class="cool kitty" src="{cat}" alt="Very meow" />
@@ -167,7 +167,7 @@ Widths/formats can be applied to a particular image. From your `.svelte` file:
 <script>
   // We override defaults to generate 4 variants: 720/1560w in webp/jpg
   import src from '$lib/a/cat.jpg?w=720;1560&format=webp;jpg&as=run'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 </script>
 
 <Img {src} alt="cat" />
@@ -183,7 +183,7 @@ If just **one** variant is generated, then only the `<img>` tag renders, so:
 <script>
   // Generate only 1 variant: 640x640 in jpg
   import src from '$lib/a/cat.jpg?w=640&h=640&format=jpg&as=run'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 </script>
 
 <Img {src} alt="cat" />
@@ -217,7 +217,7 @@ For a dominant single-colour background, set `?as=run:1`, so:
 ```html
 <script>
   import src from '$lib/a/cat.jpg?as=run:1'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 </script>
 
 <!-- Render img with dominant colour background -->
@@ -245,7 +245,7 @@ of transformation directives offered by
 <script>
   // Generate all 9 variants at fixed 600px height
   import src from '$lib/a/cat.jpg?h=600&fit=cover&normalize&as=run'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 </script>
 
 <Img {src} alt="cat" />
@@ -260,7 +260,7 @@ select when those conditions are true. Read up more on
 ```html
 <script>
   import src from '$lib/a/cat.jpg?w=480;800&as=run'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 </script>
 
 <!-- 
@@ -312,7 +312,7 @@ attribute on the rendered `<img>` tag by default. This is supported by
 ```html
 <script>
   import src from '$lib/a/cat.jpg?as=run'
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 </script>
 
 <Img {src} alt="cat" loading="eager" />
@@ -325,7 +325,7 @@ Use `Vite`'s `import.meta.glob` [feature](https://vitejs.dev/guide/features.html
 <!-- prettier-ignore -->
 ```html
 <script>
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
 
   const modules = import.meta.glob('$lib/a/cats/*.*', {
     import: 'default',
@@ -347,7 +347,7 @@ Use the `svelte-img` component on its own by passing a `src` object, like so:
 <!-- prettier-ignore -->
 ```html
 <script>
-import Img from '@zerodevx/svelte-img'
+import Img from '@kage0x3b/svelte-img'
 
 const src = {
   sources: {
@@ -370,7 +370,7 @@ for me, but you can apply your own using CSS.
 <!-- prettier-ignore -->
 ```html
 <script>
-  import Img from '@zerodevx/svelte-img'
+  import Img from '@kage0x3b/svelte-img'
   import src from '$lib/a/cat.jpg?as=run'
   import { onMount } from 'svelte'
 
@@ -412,7 +412,7 @@ Reveal images with a fade-in effect (aka medium.com) when they are loaded **and*
 ```html
 <script>
   import src from '$lib/a/cat.jpg?as=run'
-  import { FxReveal as Img } from '@zerodevx/svelte-img'
+  import { FxReveal as Img } from '@kage0x3b/svelte-img'
 </script>
 
 <Img class="my-img" {src} alt="cat" />
@@ -445,7 +445,7 @@ The default factor is `0.75`.
 ```html
 <script>
   import src from '$lib/a/cat.jpg?as=run'
-  import { FxParallax as Img } from '@zerodevx/svelte-img'
+  import { FxParallax as Img } from '@kage0x3b/svelte-img'
 </script>
 
 <Img class="my-img" factor="0.5" {src} alt="cat" />
@@ -475,7 +475,7 @@ $ npm run test
 
 ## Changelog
 
-Please refer to the [releases](https://github.com/zerodevx/svelte-img/releases) page.
+Please refer to the [releases](https://github.com/Kage0x3B/svelte-img/releases) page.
 
 ## License
 
