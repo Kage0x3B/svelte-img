@@ -12,6 +12,8 @@ Includes special effects:
 
 Hope you like cats. Demo: https://svelte-img.moritz.website
 
+> This is a fork of the original [svelte-img](https://github.com/zerodevx/svelte-img) which is rewritten for Svelte 5 and uses newer vite-imagetools/sharp dependencies.
+
 ## Install
 
 Install the package:
