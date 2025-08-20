@@ -1,6 +1,6 @@
 {
 	"name": "@kage0x3b/svelte-img",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"private": false,
 	"description": "High-performance responsive/progressive images for SvelteKit",
 	"repository": "github:Kage0x3B/svelte-img",
