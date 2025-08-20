@@ -1,19 +1,26 @@
-<script>
-export let sources = {}
-export let sizes = undefined
+<script lang="ts">
+	import type { Snippet } from 'svelte';
 
-let srcs = []
+	interface Props {
+		sources: Record<string, string>;
 
-$: srcs = Object.entries(sources)
+		sizes?: string;
+
+		children?: Snippet;
+	}
+
+	let { children, sources, sizes }: Props = $props();
+
+	const sourcesArray = $derived(Object.entries(sources));
 </script>
 
-{#if srcs.length}
-  <picture>
-    {#each srcs as [format, srcset]}
-      <source type="image/{format}" {sizes} {srcset} />
-    {/each}
-    <slot />
-  </picture>
+{#if sourcesArray.length}
+	<picture>
+		{#each sourcesArray as [format, srcset] (srcset)}
+			<source type="image/{format}" {sizes} {srcset} />
+		{/each}
+		{@render children?.()}
+	</picture>
 {:else}
-  <slot />
+	{@render children?.()}
 {/if}

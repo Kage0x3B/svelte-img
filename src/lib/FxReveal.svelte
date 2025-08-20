@@ -1,81 +1,97 @@
-<script>
-import Img from './SvelteImg.svelte'
-import { observe, len, lqipToBackground } from './utils.js'
-import { onMount } from 'svelte'
+<script lang="ts">
+	import Img from './SvelteImg.svelte';
+	import { observe, hasObjectKeys, lqipToBackground } from './utils.js';
+	import { onMount } from 'svelte';
+	import type { ImageSourceObject } from '$lib/types.js';
+	import type { HTMLImgAttributes } from 'svelte/elements';
 
-/**
- * Imagetools import meta
- * @type {any}
- */
-export let src = {}
+	interface Props extends Omit<HTMLImgAttributes, 'src'> {
+		/**
+		 * Imagetools import meta
+		 */
+		src: string | null | undefined | unknown;
 
-/**
- * Bindable reference to &lt;img&gt; element
- * @type {HTMLImageElement|undefined}
- */
-export let ref = undefined
+		/**
+		 * Bindable reference to &lt;img&gt; element
+		 */
+		ref?: HTMLImageElement;
+	}
 
-let meta = {}
-let background
-let mounted = false
-let loaded = false
-let inview = false
+	let { src, ref = $bindable(), ...rest }: Props = $props();
 
-$: if (len(src)) {
-  loaded = false
-  const { lqip, src: s, w, h } = src.img
-  background = lqip ? lqipToBackground(lqip) : undefined
-  const { sources = {} } = src
-  meta = { img: { src: s, w, h }, sources }
-} else {
-  meta = {}
-}
+	const typedSrc = $derived(src as ImageSourceObject);
 
-onMount(() => {
-  mounted = true
-  if (ref.complete) loaded = true
-})
+	let meta: ImageSourceObject = $state({});
+	let background = $state<string>();
+	let isMounted = $state(false);
+	let isLoaded = $state(false);
+	let isInView = $state(false);
+
+	$effect(() => {
+		if (hasObjectKeys(typedSrc)) {
+			console.log('next img', typedSrc);
+			isLoaded = false;
+			background = typedSrc.img?.lqip ? lqipToBackground(typedSrc.img?.lqip) : undefined;
+			const { sources = {} } = typedSrc;
+			meta = { img: { src: typedSrc.img?.src, w: typedSrc.img?.w, h: typedSrc.img?.w }, sources };
+		} else {
+			meta = {};
+		}
+	});
+
+	onMount(() => {
+		isMounted = true;
+
+		if (ref?.complete) {
+			isLoaded = true;
+		}
+	});
 </script>
 
-{#if len(meta)}
-  <div
-    class="wrap"
-    class:mounted
-    class:reveal={loaded && inview}
-    use:observe
-    on:enter={() => (inview = true)}
-  >
-    <Img {...$$restProps} bind:ref on:load on:load={() => (loaded = true)} on:click src={meta} />
-    <div class="lqip" style:background />
-  </div>
+{#if hasObjectKeys(meta)}
+	<div
+		class="wrap"
+		class:mounted={isMounted}
+		class:reveal={isLoaded && isInView}
+		{@attach observe}
+		onenter={() => (isInView = true)}
+	>
+		<Img {...rest} bind:ref onload={() => (isLoaded = true)} src={meta} />
+		<div class="lqip" style:background></div>
+	</div>
 {/if}
 
 <style>
-.wrap {
-  position: relative;
-  overflow: hidden;
-}
-.wrap :global(img) {
-  margin: 0;
-}
-.mounted :global(img) {
-  opacity: 0;
-  transform: var(--reveal-transform, scale(1.02));
-}
-.mounted.reveal :global(img) {
-  transition: var(--reveal-transition, opacity 1s ease-in, transform 0.8s ease-out);
-  opacity: 1;
-  transform: scale(1);
-}
-.lqip {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-}
-.lqip::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  backdrop-filter: var(--reveal-filter, blur(20px));
-}
+	.wrap {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.wrap :global(img) {
+		margin: 0;
+	}
+
+	.mounted :global(img) {
+		opacity: 0;
+		transform: var(--reveal-transform, scale(1.02));
+	}
+
+	.mounted.reveal :global(img) {
+		transition: var(--reveal-transition, opacity 1s ease-in, transform 0.8s ease-out);
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.lqip {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+	}
+
+	.lqip::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		backdrop-filter: var(--reveal-filter, blur(20px));
+	}
 </style>

@@ -1,12 +1,38 @@
-.DS_Store
+test-results
 node_modules
-/build
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
 /.svelte-kit
+/build
 /dist
-.env
-.env.*
-!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env.local
+.env.*.local
+
+# Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-temp/
-test-results/
+
+# IDE
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+.idea/httpRequests

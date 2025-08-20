@@ -1,59 +1,64 @@
-<script>
-import Picture from './Picture.svelte'
-import { len, lqipToBackground } from './utils.js'
+<script lang="ts">
+	import Picture from './Picture.svelte';
+	import { hasObjectKeys, lqipToBackground } from './utils.js';
+	import type { HTMLImgAttributes } from 'svelte/elements';
+	import type { ImageSourceObject } from '$lib/types.js';
 
-/**
- * Imagetools import meta
- * @type {any}
- */
-export let src = {}
+	interface Props extends Omit<HTMLImgAttributes, 'src'> {
+		/**
+		 * Imagetools import meta
+		 */
+		src: string | null | undefined | unknown;
 
-/**
- * &lt;img&gt; element `sizes` attr
- * @type {string|undefined}
- */
-export let sizes = undefined
+		/**
+		 * &lt;img&gt; element `sizes` attr
+		 */
+		sizes?: string;
 
-/**
- * &lt;img&gt; `width` override
- * @type {number|undefined}
- */
-export let width = undefined
+		/**
+		 * &lt;img&gt; `width` override
+		 */
+		width?: number;
 
-/**
- * &lt;img&gt; `height` override
- * @type {number|undefined}
- */
-export let height = undefined
+		/**
+		 * &lt;img&gt; `height` override
+		 */
+		height?: number;
 
-/**
- * &lt;img&gt; element `loading` attr
- * @type {'lazy'|'eager'}
- */
-export let loading = 'lazy'
+		/**
+		 * &lt;img&gt; element `loading` attr
+		 * @default 'lazy'
+		 */
+		loading?: 'lazy' | 'eager';
 
-/**
- * &lt;img&gt; element `decoding` attr
- * @type {'async'|'auto'|'sync'}
- */
-export let decoding = 'async'
+		/**
+		 * &lt;img&gt; element `decoding` attr
+		 * @default 'async'
+		 */
+		decoding?: 'async' | 'auto' | 'sync';
 
-/**
- * Bindable reference to &lt;img&gt; element
- * @type {HTMLImageElement|undefined}
- */
-export let ref = undefined
+		/**
+		 * Bindable reference to &lt;img&gt; element
+		 */
+		ref?: HTMLImageElement;
+	}
 
-let sources = []
-let img = {}
-let background = undefined
+	let {
+		src,
+		sizes,
+		width,
+		height,
+		loading = 'lazy',
+		decoding = 'async',
+		alt = '',
+		ref = $bindable(),
+		...rest
+	}: Props = $props();
 
-$: sources = src.sources || {}
-$: img = src.img || {}
-$: if (len(img)) {
-  const { lqip } = img
-  background = lqip ? lqipToBackground(lqip) : undefined
-}
+	const typedSrc = $derived(typeof src === 'object' ? (src as ImageSourceObject) : undefined);
+	const background = $derived(
+		hasObjectKeys(typedSrc?.img) && typedSrc?.img?.lqip ? lqipToBackground(typedSrc.img.lqip) : undefined
+	);
 </script>
 
 <!-- @component
@@ -68,20 +73,29 @@ High-performance responsive/progressive images for SvelteKit.
 <Img {src} alt="cute cat" />
 -->
 
-{#if len(img)}
-  <Picture {sources} {sizes}>
-    <!-- svelte-ignore a11y-missing-attribute a11y-no-noninteractive-element-interactions -->
-    <img
-      {...$$restProps}
-      {loading}
-      {decoding}
-      width={width || img.w || undefined}
-      height={height || img.h || undefined}
-      style:background
-      bind:this={ref}
-      on:click
-      on:load
-      src={img.src}
-    />
-  </Picture>
+{#if typedSrc?.sources && typedSrc?.img}
+	<Picture sources={typedSrc.sources} {sizes}>
+		<img
+			{...rest}
+			{loading}
+			{decoding}
+			{alt}
+			width={width || typedSrc.img.w || undefined}
+			height={height || typedSrc.img.h || undefined}
+			style:background
+			bind:this={ref}
+			src={typedSrc.img.src}
+		/>
+	</Picture>
+{:else if src && typeof src === 'string'}
+	<img
+		{...rest}
+		{loading}
+		{decoding}
+		{alt}
+		width={width || undefined}
+		height={height || undefined}
+		bind:this={ref}
+		{src}
+	/>
 {/if}

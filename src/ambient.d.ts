@@ -1,4 +1,4 @@
 declare module './assets/*' {
-  var img
-  export default img
+	var img;
+	export default img;
 }

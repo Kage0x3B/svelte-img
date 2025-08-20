@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Inter Variable', sans;
+}
+
+@plugin "@tailwindcss/typography";
+@plugin "@iconify/tailwind4";
+@plugin "daisyui";
+
+@plugin "@iconify/tailwind4" {
+	prefixes: mdi;
+}
+
+@plugin "daisyui/theme" {
+	name: 'light';
+	default: true;
+	--color-primary: oklch(0.5487 0.1362 248.31);
+	--color-primary-content: oklch(100% 0 0);
+}
+
+@plugin "daisyui/theme" {
+	name: 'dark';
+	--color-primary: oklch(0.5487 0.1362 248.31);
+	--color-primary-content: oklch(100% 0 0);
+    --color-neutral: oklch(37% 0.044 257.287);
+}
