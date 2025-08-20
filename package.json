@@ -1,7 +1,10 @@
 {
 	"name": "@kage0x3b/svelte-img",
 	"version": "3.0.0",
+	"private": false,
 	"description": "High-performance responsive/progressive images for SvelteKit",
+	"repository": "github:Kage0x3B/svelte-img",
+	"homepage": "https://svelte-img.moritz.website",
 	"author": "Jason Lee <jason@zerodevx.com>",
 	"contributors": [
 		{
@@ -90,8 +93,6 @@
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"license": "ISC",
-	"repository": "github:Kage0x3B/svelte-img",
-	"homepage": "",
 	"keywords": [
 		"svelte",
 		"sveltekit",

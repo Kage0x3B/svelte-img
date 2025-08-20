@@ -9,5 +9,11 @@
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
-	}
+	},
+  "routes": [
+    {
+      "pattern": "svelte-img.moritz.website",
+      "custom_domain": true
+    }
+  ]
 }
