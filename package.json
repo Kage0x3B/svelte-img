@@ -90,6 +90,9 @@
 			"default": "./dist/vite.js"
 		}
 	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"license": "ISC",
