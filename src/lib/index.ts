@@ -5,3 +5,4 @@ import { observe } from './utils.js';
 
 export default Img;
 export { FxReveal, FxParallax, observe };
+export type { ImageSourceObject } from './types.js';
