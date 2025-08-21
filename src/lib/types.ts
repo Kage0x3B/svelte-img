@@ -16,6 +16,6 @@ type ImageFormat =
 	| 'jxr';
 
 export interface ImageSourceObject {
-	sources?: Record<ImageFormat, string>;
+	sources?: Partial<Record<ImageFormat, string>>;
 	img?: { lqip?: string; src?: string; w?: number; h?: number };
 }
