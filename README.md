@@ -21,17 +21,21 @@ Install the package:
 ```
 $ npm i -D @kage0x3b/svelte-img
 ```
+or
+```
+$ pnpm add -D @kage0x3b/svelte-img
+```
 
-Add `imagetools` plugin into your `vite.config.js`:
+Add `imagetools` plugin into your `vite.config.ts`:
 
-```js
-import { defineConfig } from 'vite'
-import { sveltekit } from '@sveltejs/kit/vite'
-import { imagetools } from '@kage0x3b/svelte-img/vite'
+```typescript
+import { defineConfig } from 'vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import { imagetools } from '@kage0x3b/svelte-img/vite';
 
 export default defineConfig({
-  plugins: [sveltekit(), imagetools()]
-})
+	plugins: [sveltekit(), imagetools()]
+});
 ```
 
 Optionally, to silence typescript
@@ -56,7 +60,7 @@ image placeholder.
 Invoke the preset with the `?as=run` query param:
 
 ```js
-import imageMeta from 'path/to/asset?as=run'
+import imageMeta from 'path/to/asset?as=run';
 ```
 
 ## Usage
@@ -64,42 +68,35 @@ import imageMeta from 'path/to/asset?as=run'
 Use anywhere in your Svelte app:
 
 <!-- prettier-ignore -->
-```html
-<script>
+```svelte
+<script lang="ts">
   // Import original full-sized image with `?as=run` query param
-  import cat from '$lib/assets/cat.jpg?as=run'
-  import Img from '@kage0x3b/svelte-img'
+  import cat from '$lib/assets/images/cat.jpg?as=run';
+  import Img from '@kage0x3b/svelte-img';
 </script>
 
-<Img class="cool kitty" src="{cat}" alt="Very meow" />
+<Img class="cool kitty" src={cat} alt="Very meow" />
 ```
+
+(If you pass a normal image source string the `src` attribute, the component will fallback to a normal `<img>` tag)
 
 The image component renders into:
 
 ```html
 <picture>
-  <source
-    type="image/avif"
-    srcset="path/to/avif-480 480w, path/to/avif-1024 1024w, path/to/avif-1920 1920w"
-  />
-  <source
-    type="image/webp"
-    srcset="path/to/webp-480 480w, path/to/webp-1024 1024w, path/to/webp-1920 1920w"
-  />
-  <source
-    type="image/jpeg"
-    srcset="path/to/jpeg-480 480w, path/to/jpeg-1024 1024w, path/to/jpeg-1920 1920w"
-  />
-  <img
-    class="cool kitty"
-    width="1920"
-    height="1080"
-    loading="lazy"
-    decoding="async"
-    style="background: url(data:image/webp;base64,XXX) no-repeat center/cover"
-    alt="Very meow"
-    src="path/to/jpeg-1920"
-  />
+	<source type="image/avif" srcset="path/to/avif-480 480w, path/to/avif-1024 1024w, path/to/avif-1920 1920w" />
+	<source type="image/webp" srcset="path/to/webp-480 480w, path/to/webp-1024 1024w, path/to/webp-1920 1920w" />
+	<source type="image/jpeg" srcset="path/to/jpeg-480 480w, path/to/jpeg-1024 1024w, path/to/jpeg-1920 1920w" />
+	<img
+		class="cool kitty"
+		width="1920"
+		height="1080"
+		loading="lazy"
+		decoding="async"
+		style="background: url(data:image/webp;base64,XXX) no-repeat center/cover"
+		alt="Very meow"
+		src="path/to/jpeg-1920"
+	/>
 </picture>
 ```
 
@@ -112,7 +109,7 @@ widths in `avif/webp/jpg` formats; and a `16px webp/base64` low-quality image pl
 
 To change this globally, edit your `vite.config.js`:
 
-```js
+```typescript
 import ...
 
 // By default, `run` is set to 'w=480;1024;1920&format=avif;webp;jpg' (9 variants)
@@ -126,7 +123,7 @@ export default defineConfig({
       }
     })
   ]
-})
+});
 ```
 
 > [!NOTE]  
@@ -138,26 +135,26 @@ export default defineConfig({
 
 Use profiles to manage multiple defaults. Define in your `vite.config.js`:
 
-```js
+```typescript
 export default defineConfig({
-  plugins: [
-    sveltekit(),
-    imagetools({
-      profiles: {
-        sm: new URLSearchParams('w=640&format=webp;jpg'),
-        lg: new URLSearchParams('w=640;1280;1920&format=webp;jpg')
-      }
-    })
-  ]
-})
+	plugins: [
+		sveltekit(),
+		imagetools({
+			profiles: {
+				sm: new URLSearchParams('w=640&format=webp;jpg'),
+				lg: new URLSearchParams('w=640;1280;1920&format=webp;jpg')
+			}
+		})
+	]
+});
 ```
 
 Then invoke in your app:
 
-```js
-import sm from '$lib/a/1.jpg?as=sm' // use `sm` profile
-import lg from '$lib/a/2.jpg?as=lg' // use `lg` profile
-import normal from '$lib/a/3.jpg?as=run'
+```typescript
+import sm from '$lib/assets/images/1.jpg?as=sm'; // use `sm` profile
+import lg from '$lib/assets/images/2.jpg?as=lg'; // use `lg` profile
+import normal from '$lib/assets/images/3.jpg?as=run';
 ```
 
 ### On a per-image basis
@@ -165,11 +162,11 @@ import normal from '$lib/a/3.jpg?as=run'
 Widths/formats can be applied to a particular image. From your `.svelte` file:
 
 <!-- prettier-ignore -->
-```html
-<script>
+```svelte
+<script lang="ts">
   // We override defaults to generate 4 variants: 720/1560w in webp/jpg
-  import src from '$lib/a/cat.jpg?w=720;1560&format=webp;jpg&as=run'
-  import Img from '@kage0x3b/svelte-img'
+  import src from '$lib/assets/images/cat.jpg?as=run&w=720;1560&format=webp;jpg';
+  import Img from '@kage0x3b/svelte-img';
 </script>
 
 <Img {src} alt="cat" />
@@ -181,11 +178,11 @@ Widths/formats can be applied to a particular image. From your `.svelte` file:
 If just **one** variant is generated, then only the `<img>` tag renders, so:
 
 <!-- prettier-ignore -->
-```html
-<script>
+```svelte
+<script lang="ts">
   // Generate only 1 variant: 640x640 in jpg
-  import src from '$lib/a/cat.jpg?w=640&h=640&format=jpg&as=run'
-  import Img from '@kage0x3b/svelte-img'
+  import src from '$lib/assets/images/cat.jpg?as=run&w=640&h=640&format=jpg';
+  import Img from '@kage0x3b/svelte-img';
 </script>
 
 <Img {src} alt="cat" />
@@ -195,13 +192,13 @@ Renders into:
 
 ```html
 <img
-  width="640"
-  height="640"
-  loading="lazy"
-  decoding="async"
-  style="background: url(data:image/webp;base64,XXX) no-repeat center/cover"
-  alt="cat"
-  src="path/to/jpg-640"
+	width="640"
+	height="640"
+	loading="lazy"
+	decoding="async"
+	style="background: url(data:image/webp;base64,XXX) no-repeat center/cover"
+	alt="cat"
+	src="path/to/jpg-640"
 />
 ```
 
@@ -216,10 +213,10 @@ To disable LQIP, set `?as=run:0`.
 For a dominant single-colour background, set `?as=run:1`, so:
 
 <!-- prettier-ignore -->
-```html
-<script>
-  import src from '$lib/a/cat.jpg?as=run:1'
-  import Img from '@kage0x3b/svelte-img'
+```svelte
+<script lang="ts">
+  import src from '$lib/assets/images/cat.jpg?as=run:1';
+  import Img from '@kage0x3b/svelte-img';
 </script>
 
 <!-- Render img with dominant colour background -->
@@ -243,11 +240,11 @@ of transformation directives offered by
 [`vite-imagetools`](https://github.com/JonasKruckenberg/imagetools) can be used.
 
 <!-- prettier-ignore -->
-```html
-<script>
+```svelte
+<script lang="ts">
   // Generate all 9 variants at fixed 600px height
-  import src from '$lib/a/cat.jpg?h=600&fit=cover&normalize&as=run'
-  import Img from '@kage0x3b/svelte-img'
+  import src from '$lib/assets/images/cat.jpg?as=run&h=600&fit=cover&normalize';
+  import Img from '@kage0x3b/svelte-img';
 </script>
 
 <Img {src} alt="cat" />
@@ -259,10 +256,10 @@ Use the `sizes` attribute to define media conditions that provide hints as to wh
 select when those conditions are true. Read up more on
 [responsive images and the picture element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture).
 
-```html
-<script>
-  import src from '$lib/a/cat.jpg?w=480;800&as=run'
-  import Img from '@kage0x3b/svelte-img'
+```svelte
+<script lang="ts">
+	import src from '$lib/assets/images/cat.jpg?as=run&w=480;800';
+	import Img from '@kage0x3b/svelte-img';
 </script>
 
 <!-- 
@@ -277,30 +274,30 @@ Renders into:
 
 ```html
 <picture>
-  <source
-    type="image/avif"
-    sizes="(max-width: 600px) 480px, 800px"
-    srcset="path/to/avif-480 480w, path/to/avif-800 800w"
-  />
-  <source
-    type="image/webp"
-    sizes="(max-width: 600px) 480px, 800px"
-    srcset="path/to/webp-480 480w, path/to/webp-800 800w"
-  />
-  <source
-    type="image/jpeg"
-    sizes="(max-width: 600px) 480px, 800px"
-    srcset="path/to/jpeg-480 480w, path/to/jpeg-800 800w"
-  />
-  <img
-    alt="cat"
-    width="800"
-    height="600"
-    loading="lazy"
-    decoding="async"
-    src="path/to/jpeg-800"
-    style="background: url(data:image/webp;base64,XXX) center center / cover no-repeat;"
-  />
+	<source
+		type="image/avif"
+		sizes="(max-width: 600px) 480px, 800px"
+		srcset="path/to/avif-480 480w, path/to/avif-800 800w"
+	/>
+	<source
+		type="image/webp"
+		sizes="(max-width: 600px) 480px, 800px"
+		srcset="path/to/webp-480 480w, path/to/webp-800 800w"
+	/>
+	<source
+		type="image/jpeg"
+		sizes="(max-width: 600px) 480px, 800px"
+		srcset="path/to/jpeg-480 480w, path/to/jpeg-800 800w"
+	/>
+	<img
+		alt="cat"
+		width="800"
+		height="600"
+		loading="lazy"
+		decoding="async"
+		src="path/to/jpeg-800"
+		style="background: url(data:image/webp;base64,XXX) center center / cover no-repeat;"
+	/>
 </picture>
 ```
 
@@ -311,10 +308,10 @@ attribute on the rendered `<img>` tag by default. This is supported by
 [most modern browsers](https://caniuse.com/loading-lazy-attr). To load an image eagerly instead:
 
 <!-- prettier-ignore -->
-```html
-<script>
-  import src from '$lib/a/cat.jpg?as=run'
-  import Img from '@kage0x3b/svelte-img'
+```svelte
+<script lang="ts">
+    import src from '$lib/assets/images/cat.jpg?as=run';
+    import Img from '@kage0x3b/svelte-img';
 </script>
 
 <Img {src} alt="cat" loading="eager" />
@@ -325,20 +322,20 @@ attribute on the rendered `<img>` tag by default. This is supported by
 Use `Vite`'s `import.meta.glob` [feature](https://vitejs.dev/guide/features.html#glob-import).
 
 <!-- prettier-ignore -->
-```html
-<script>
-  import Img from '@kage0x3b/svelte-img'
-
-  const modules = import.meta.glob('$lib/a/cats/*.*', {
-    import: 'default',
-    eager: true,
-    query: { w: 640, h: 640, fit: 'cover', as: 'run' }
-  })
-  const images = Object.entries(modules).map((i) => i[1])
+```svelte
+<script lang="ts">
+    import Img from '@kage0x3b/svelte-img';
+    
+    const modules = import.meta.glob('$lib/a/cats/*.*', {
+        import: 'default',
+        eager: true,
+        query: { w: 640, h: 640, fit: 'cover', as: 'run' }
+    });
+    const images = Object.entries(modules).map((i) => i[1]);
 </script>
 
 {#each images as src}
-  <Img {src} alt="cat" />
+    <Img {src} alt="cat" />
 {/each}
 ```
 
@@ -347,18 +344,19 @@ Use `Vite`'s `import.meta.glob` [feature](https://vitejs.dev/guide/features.html
 Use the `svelte-img` component on its own by passing a `src` object, like so:
 
 <!-- prettier-ignore -->
-```html
-<script>
-import Img from '@kage0x3b/svelte-img'
-
-const src = {
-  sources: {
-    // Order is important; last format is fallback img
-    webp: 'path/to/480.webp 480w, ...', //srcset
-    jpeg: '...'
-  },
-  img: { src: 'path/to/img', w: 1920, h: 1080 },
-}
+```svelte
+<script lang="ts">
+    import Img from '@kage0x3b/svelte-img';
+    import type { ImageSourceObject } from '@kage0x3b/svelte-img';
+    
+    const src = {
+        sources: {
+            // Order is important; last format is fallback img
+            webp: 'path/to/480.webp 480w, ...', //srcset
+            jpeg: '...'
+        },
+        img: { src: 'path/to/img', w: 1920, h: 1080 },
+    } satisfies ImageSourceObject;
 </script>
 
 <Img {src} alt="cat" />
@@ -370,37 +368,43 @@ Natively, browsers do already apply _some_ blur when displaying low resolution i
 for me, but you can apply your own using CSS.
 
 <!-- prettier-ignore -->
-```html
-<script>
-  import Img from '@kage0x3b/svelte-img'
-  import src from '$lib/a/cat.jpg?as=run'
-  import { onMount } from 'svelte'
-
-  let ref, loaded
-  onMount(() => {
-    if (ref.complete) loaded = true
-  })
+```svelte
+<script lang="ts">
+    import Img from '@kage0x3b/svelte-img';
+    import src from '$lib/assets/images/cat.jpg?as=run';
+    import { onMount } from 'svelte';
+    
+    let ref = $state<HTMLImageElement>();
+    let loaded = $state(false);
+    
+    onMount(() => {
+        if (ref.complete) {
+            loaded = true;
+        }
+    });
 </script>
 
 <div class="wrap">
-  <Img {src} bind:ref on:load={() => (loaded = true)} />
-  <div class="blur" class:loaded />
+    <Img {src} bind:ref onload={() => (loaded = true)} />
+    <div class="blur" class:loaded />
 </div>
 
 <style>
-  .wrap {
-    position: relative;
-    overflow: hidden;
-  }
-  .blur {
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(20px);
-    pointer-events: none;
-  }
-  .loaded {
-    display: none;
-  }
+    .wrap {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .blur {
+        position: absolute;
+        inset: 0;
+        backdrop-filter: blur(20px);
+        pointer-events: none;
+    }
+    
+    .loaded {
+        display: none;
+    }
 </style>
 ```
 
@@ -411,24 +415,24 @@ for me, but you can apply your own using CSS.
 Reveal images with a fade-in effect (aka medium.com) when they are loaded **and** in the viewport.
 
 <!-- prettier-ignore -->
-```html
-<script>
-  import src from '$lib/a/cat.jpg?as=run'
-  import { FxReveal as Img } from '@kage0x3b/svelte-img'
+```svelte
+<script lang="ts">
+    import src from '$lib/assets/images/cat.jpg?as=run';
+    import { FxReveal as Img } from '@kage0x3b/svelte-img';
 </script>
 
 <Img class="my-img" {src} alt="cat" />
 
 <style>
-  :global(.my-img) {
-    width: 640px;
-    height: 480px;
-    
-    /* These CSS vars (with their default values) are exposed */
-    --reveal-transform: scale(1.02);
-    --reveal-transition: opacity 1s ease-in, transform 0.8s ease-out;
-    --reveal-filter: blur(20px);
-  }
+    :global(.my-img) {
+        width: 640px;
+        height: 480px;
+        
+        /* These CSS vars (with their default values) are exposed */
+        --reveal-transform: scale(1.02);
+        --reveal-transition: opacity 1s ease-in, transform 0.8s ease-out;
+        --reveal-filter: blur(20px);
+    }
 </style>
 ```
 
@@ -444,19 +448,19 @@ and 1, that controls how much slower the element scrolls, relative to the scroll
 The default factor is `0.75`.
 
 <!-- prettier-ignore -->
-```html
-<script>
-  import src from '$lib/a/cat.jpg?as=run'
-  import { FxParallax as Img } from '@kage0x3b/svelte-img'
+```svelte
+<script lang="ts">
+    import src from '$lib/assets/images/cat.jpg?as=run';
+    import { FxParallax as Img } from '@kage0x3b/svelte-img';
 </script>
 
 <Img class="my-img" factor="0.5" {src} alt="cat" />
 
 <style>
-  :global(.my-img) {
-    width: 100%;
-    height: 28rem;
-  }
+    :global(.my-img) {
+        width: 100%;
+        height: 28rem;
+    }
 </style>
 ```
 
@@ -472,7 +476,7 @@ End-to-end testing via [Playwright](https://github.com/microsoft/playwright). To
 headlessly:
 
 ```
-$ npm run test
+$ pnpm test
 ```
 
 ## Changelog
