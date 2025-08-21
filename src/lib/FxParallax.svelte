@@ -61,7 +61,7 @@
 
 <div
 	class={['wrap', className]}
-	class:isMounted
+	class:mounted={isMounted}
 	bind:offsetHeight
 	{@attach observe}
 	onenter={entered}
