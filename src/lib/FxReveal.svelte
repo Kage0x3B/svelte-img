@@ -29,7 +29,6 @@
 
 	$effect(() => {
 		if (hasObjectKeys(typedSrc)) {
-			console.log('next img', typedSrc);
 			isLoaded = false;
 			background = typedSrc.img?.lqip ? lqipToBackground(typedSrc.img?.lqip) : undefined;
 			const { sources = {} } = typedSrc;
